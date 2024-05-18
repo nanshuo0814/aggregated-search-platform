@@ -3,6 +3,7 @@ package com.nanshuo.project.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nanshuo.project.common.ErrorCode;
 import com.nanshuo.project.config.CaptchaConfig;
@@ -636,6 +637,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         } else {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "排序字段无效");
         }
+    }
+
+    @Override
+    public Page<UserSafetyVO> listUserVOByPage(UserQueryRequest userQueryRequest) {
+        long current = userQueryRequest.getCurrent();
+        long size = userQueryRequest.getPageSize();
+        Page<User> userPage = this.page(new Page<>(current, size),
+                this.getQueryWrapper(userQueryRequest));
+        Page<UserSafetyVO> userVOPage = new Page<>(current, size, userPage.getTotal());
+        List<UserSafetyVO> userVO = this.getUserSafeVOList(userPage.getRecords());
+        userVOPage.setRecords(userVO);
+        return userVOPage;
     }
 
 }

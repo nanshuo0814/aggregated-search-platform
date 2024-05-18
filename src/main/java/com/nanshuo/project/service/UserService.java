@@ -2,6 +2,7 @@ package com.nanshuo.project.service;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.nanshuo.project.model.domain.User;
 import com.nanshuo.project.model.dto.user.*;
@@ -168,4 +169,9 @@ public interface UserService extends IService<User> {
      */
     UserLoginVO userLoginByMpOpen(WxOAuth2UserInfo wxOAuth2UserInfo, HttpServletRequest request);
 
+    /**
+     * 分页查询用户
+     * @param userQueryRequest
+     */
+    Page<UserSafetyVO> listUserVOByPage(UserQueryRequest userQueryRequest);
 }
